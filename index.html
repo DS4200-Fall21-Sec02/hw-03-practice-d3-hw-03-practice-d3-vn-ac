@@ -5,6 +5,11 @@
 <head>
   <meta charset='utf-8'>
 
+  <script src = "lib/d3.v6.1.1/d3.min.js"> </script>
+
+   <!-- JavaScript Linking-->
+  <script src='js/main.js'></script>
+
   <!-- Title -->
   <title>hw-03: Practicing D3</title>
 
@@ -26,14 +31,15 @@
 <body>
 
   <!-- Update this with your GitHub repo URL -->
-  <span id='forkongithub'><a href='https://github.com/DS4200-Fall21-Sec02/practice-D3'>Fork me on GitHub</a></span>
+  <span id=''><a href='https://github.com/DS4200-Fall21-Sec02/hw-03-practice-d3-hw-03-practice-d3-vn-ac'>Fork me on GitHub</a></span>
 
   <!-- Writeup -->
   <div class='content-column'>
     <h1>hw-03: Practicing D3</h1>
 
     <p>
-      Replace this text. Use this space to describe your visualizations.
+      This webpage displays two types of visualizations: a grouped bar chart and a scatter plot. Both visuals use distinct data sets
+      to analyze a correlation between their respective independent variables. 
     </p>
 
     <h2>Simple formatting instructions</h2>
@@ -50,17 +56,46 @@
 
     <p>
       Your first visualization goes here:
+      <img src="visual1.png" alt="Visual 1">
     </p>
 
     <!-- Visualization goes here -->
     <div class='vis-holder' id='vis1'></div>
 
+    
+
+    <p>
+
+      This is our first visualization, a scatter plot.
+      The dataset's elements were selected from a random set of data points we encountered online. The dataset examines whether there 
+      exists a correleation between the number of plants and fish in a certain pond. Since the number of fish and plants seem pretty 
+      uncorrelated on the surface and the objective is to discover whether there exists some correlation, we felt that a scatterplot would 
+      best serve our purpose. A scatter plot plots two independent attributes against each other, which is exactly what we need to do in order to
+      spot a potential correlation. <br>
+
+      <a href="https://docs.google.com/spreadsheets/d/11cdoK6iOLZHUPQEvzqT2n0w_-SfBBdTCtkuAVojOt4Y/edit?usp=sharing"> <br> Data Set! </a>
+    </p>
+
 	  <p>
       Your second visualization goes here:
+      <img src="ally.png" alt="Visual 2"
+      width="750", 
+      height="750">
     </p>
 
     <!-- Visualization goes here -->
     <div class='vis-holder' id='vis2'></div>
+
+    <p>
+      This is our second visualization, a grouped bar chart. The dataset describes restaurants in Boston through features like a rating and their
+      distance from Northeastern's campus. We chose to use this dataset because the data is original and relevant to ourselves. A grouped bar chart is an appropriate encoding because it
+      groups data by each restaurant, and is able to use sub-groups, individual bars, to represent the two features. The two features are
+      also differentiated by color; blue bars show the rating and purple bars show their distance. <br>
+
+      <a href="//raw.githubusercontent.com/DS4200-Fall21-Sec02/hw-03-practice-d3-hw-03-practice-d3-vn-ac/main/data/Boston%20Food%20Review%20-%20Sheet1.csv"> <br> Data Set! </a>
+
+
+    </p>
 
     <h2>Acknowledgments</h2>
 
@@ -80,6 +115,9 @@
       <li><a href='https://github.com/NEU-DS-4200-F20-Staff/Assignment--D3_Basic_Charts'>
         Assignment--D3_Basic_Charts</a>
         by Cody Dunne is used to create this assignment.
+      </li>
+      <li><a href='https://www.d3-graph-gallery.com/graph/scatter_basic.html'>
+        D3 Graph Gallery</a> used to create the scatter plot. 
       </li>
     </ul>
   </div>
