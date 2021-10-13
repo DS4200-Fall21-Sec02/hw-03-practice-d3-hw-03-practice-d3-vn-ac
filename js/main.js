@@ -7,171 +7,45 @@ let margin = {
     right: 30,
     bottom: 35
   },
-  width = 500 - margin.left - margin.right,
-  height = 500 - margin.top - margin.bottom;
+  width = 800 - margin.left - margin.right,
+  height = 800 - margin.top - margin.bottom;
 
 // first visualization
-let svg = d3.select('#vis1')
-  .append('svg')
-  .attr('preserveAspectRatio', 'xMidYMid meet') // this will scale your visualization according to the size of its parent element and the page.
-  .attr('width', '100%') // this is now required by Chrome to ensure the SVG shows up at all
-  .style('background-color', '#ccc') // change the background color to light gray
-  .attr('viewBox', [0, 0, width + margin.left + margin.right, height + margin.top + margin.bottom].join(' '))
+let svg1 = d3.select('#vis1')
+.append('svg')
+.attr('preserveAspectRatio', 'xMidYMid meet') 
+.attr('width', '50%') 
+.attr("height", height)
+.attr("width", width)
+.style('background-color', 'white') 
+.style('border', 'solid')
+.attr('viewBox',[50, 50, width + margin.left + margin.right, height + margin.top + margin.bottom].join(' '));
 
 d3.csv("data/DataSet2.csv").then( function(data) {
 
   // Add X axis
-  const x = d3.scaleLinear()
-  .domain([0, 100]) // sets the range of values for the x-axis
-  .range([ 0, width]);
-  svg.append("g")
-  .attr("transform", `translate(0, ${height})`) // transforms the values to match the height
-  .call(d3.axisBottom(x)); // officially plants the x-axis
+  var x = d3.scaleLinear()
+  .domain([0, 100])
+  .range([ 0, width ]);
+  svg1.append("g")
+  .attr("transform", `translate(0, ${height})`)
+  .call(d3.axisBottom(x));
 
-   // Add Y axis
-  const y = d3.scaleLinear()
-  .domain([0, 100]) // sets the range of values for the y-axis
+  // Add Y axis
+  var y = d3.scaleLinear()
+  .domain([0, 100])
   .range([ height, 0]);
-  svg.append("g")
-  .call(d3.axisLeft(y)); // officially plants the y-axis
+  svg1.append("g")
+  .call(d3.axisLeft(y));
 
-   // Add dots
-  svg.append('g')
-  .selectAll("dot") // selects the dot modifier 
+  // Add dots
+  svg1.append('g')
+  .selectAll("dot")
   .data(data)
   .join("circle")
-       .attr("cx", function (d) { return x(d.Fish); } )  // retrieves the specific data attribute
-       .attr("cy", function (d) { return y(d.Plants); } ) // retrieves the specific data attribute
-       .attr("r", 1.5)
-       .style("fill", "#69b3a2") // sets the dot color 
-       .d3.zoom("cx") // this will zoom into this particular "dot" and showcase it's value. 
+      .attr("cx", function (d) { return x(d.Fish); } )
+      .attr("cy", function (d) { return y(d.Plants); } )
+      .attr("r", 5)
+      .style("fill", "#69b3a2")
 
 })
-
-
-
-// second visualization
-let svg2 = d3.select('#vis2')
-  .append('svg')
-  .attr('preserveAspectRatio', 'xMidYMid meet') // this will scale your visualization according to the size of its parent element and the page.
-  .attr('width', '100%') // this is now required by Chrome to ensure the SVG shows up at all
-  .style('background-color', '#ccc') // change the background color to light gray
-  .attr('viewBox', [0, 0, width + margin.left + margin.right, height + margin.top + margin.bottom].join(' '))
-
-  let data1 = d3
-
-  .csv(
-
-    "https://raw.githubusercontent.com/DS4200-Fall21-Sec02/hw-03-practice-d3-hw-03-practice-d3-vn-ac/main/data/Boston%20Food%20Review%20-%20Sheet1.csv"
-
-  )
-
-  .then(function (data) {
-
-    // create the subgroups using the 4th and 5th columns of the data (rating and distance)
-
-    let subgroups = data.columns.slice(4);
-
-
-
-    // create the list of groups
-
-    let groups = data.map((d) => d.group);
-
-
-
-    // add the created groups to the visualization
-
-    console.log(groups);
-
-
-
-    // add x axis
-
-    const x = d3.scaleBand().domain(groups).range([0, width]).padding([0.2]);
-
-    svg
-
-      .append("g")
-
-      .attr("transform", "translate(0, ${height})")
-
-      .call(d3.axisBottom(x).tickSize(0));
-
-
-
-    // add y axis
-
-    const y = d3.scaleLinear().domain([0, 12]).range([height, 0]);
-
-    svg.append("g").call(d3.axisLeft(y));
-
-     // scale subgroups
-
-     const xSubgroup = d3
-
-     .scaleBand()
-
-     .domain(subgroups)
-
-     .range([0, x.bandwidth()])
-
-     .padding([0.05]);
-
-
-
-   // create colors and give a color to each subgroup
-
-   const color = d3
-
-     .scaleOrdinal()
-
-     .domain(subgroups)
-
-     .range(["#0000ff", "#800080"]);
-
-
-
-   // show the bars
-
-   svg
-
-     .append("g")
-
-     .selectAll("g")
-
-     // Enter in data
-
-     .data(data)
-
-     .join("g")
-
-     .attr("transform", (d) => `translate(${x(d.group)}, 0)`)
-
-     .selectAll("rect")
-
-     .data(function (d) {
-
-       return subgroups.map(function (key) {
-
-         return { key: key, value: d[key] };
-
-       });
-
-     })
-
-     .join("rect")
-
-     .attr("x", (d) => xSubgroup(d.key))
-
-     .attr("y", (d) => y(d.value))
-
-     .attr("width", xSubgroup.bandwidth())
-
-     .attr("height", (d) => height - y(d.value))
-
-     .attr("fill", (d) => color(d.key));
-
- });
-
-
