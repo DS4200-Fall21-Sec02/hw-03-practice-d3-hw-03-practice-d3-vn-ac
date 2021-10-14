@@ -49,3 +49,107 @@ d3.csv("data/DataSet2.csv").then( function(data) {
       .style("fill", "#69b3a2")
 
 })
+
+// second visualization
+let svg2 = d3
+  .select("#vis2")
+  .append("svg")
+  .attr("preserveAspectRatio", "xMidYMid meet") // this will scale your visualization according to the size of its parent element and the page.
+  .attr("width", "100%") // this is now required by Chrome to ensure the SVG shows up at all
+  .style("background-color", "#ccc") // change the background color to light gray
+  .attr(
+    "viewBox",
+    [
+      0,
+      0,
+      width + margin.left + margin.right,
+      height + margin.top + margin.bottom,
+    ].join(" ")
+  );
+
+// code for second visualization
+d3.csv("data/Boston Food Review - Sheet1.csv").then(function (data) {
+  // create the subgroups using the 4th and 5th columns of the data (rating and distance)
+  var subgroups = data.columns.slice(4);
+
+  // create the list of groups
+  var groups = data.map((d) => d.Name);
+
+  // add the created groups to the visualization
+  console.log(groups);
+
+  // add x axis
+  var x = d3.scaleBand().domain(groups).range([0, width]).padding([0.2]);
+  svg2
+    .append("g")
+    .attr("transform", `translate(0, ${height})`)
+    .call(d3.axisBottom(x).tickSize(0));
+
+  // add y axis
+  var y = d3.scaleLinear().domain([0, 12]).range([height, 0]);
+  svg2.append("g").call(d3.axisLeft(y));
+
+  // scale subgroups
+  var xSubgroup = d3
+    .scaleBand()
+    .domain(subgroups)
+    .range([0, x.bandwidth()])
+    .padding([0.05]);
+
+  // create colors and give a color to each subgroup
+  var color = d3.scaleOrdinal().domain(subgroups).range(["#e41a1c", "#377eb8"]);
+
+  // add tooltip functionality
+  const tooltip = d3
+    .select("#d3-container")
+    .append("div")
+    .style("opacity", 0)
+    .attr("class", "tooltip")
+    .style("background-color", "white")
+    .style("border", "solid")
+    .style("border-width", "1px")
+    .style("border-radius", "5px")
+    .style("padding", "10px");
+
+  // Three functions that change the tooltip when user hover / move / leave a cell
+  const mouseover = function (event, d) {
+    const subgroupName = d.X;
+    const subgroupValue = d.Y;
+    tooltip
+      .html("subgroup: " + subgroupName + "<br>" + "Value: " + subgroupValue)
+      .style("opacity", 1);
+  };
+  const mousemove = function (event, d) {
+    tooltip
+      .style("transform", "translateY(-55%)")
+      .style("left", event.x / 2 + "px")
+      .style("top", event.y / 2 - 30 + "px");
+  };
+  const mouseleave = function (event, d) {
+    tooltip.style("opacity", 0);
+  };
+
+  // show the bars
+  svg2
+    .append("g")
+    .selectAll("g")
+    // Enter in data
+    .data(data)
+    .join("g")
+    .attr("transform", (d) => `translate(${x(d.Name)}, 0)`)
+    .selectAll("rect")
+    .data(function (d) {
+      return subgroups.map(function (key) {
+        return { key: key, value: d[key] };
+      });
+    })
+    .join("rect")
+    .attr("x", (d) => xSubgroup(d.key))
+    .attr("y", (d) => y(d.value))
+    .attr("width", xSubgroup.bandwidth())
+    .attr("height", (d) => height - y(d.value))
+    .attr("fill", (d) => color(d.key))
+    .on("mouseover", mouseover)
+    .on("mousemove", mousemove)
+    .on("mouseleave", mouseleave);
+});
