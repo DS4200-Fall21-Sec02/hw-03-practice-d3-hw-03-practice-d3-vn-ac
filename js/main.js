@@ -11,7 +11,7 @@ let margin = {
   height = 800 - margin.top - margin.bottom;
 
 // first visualization
-let svg1 = d3.select('#vis1')
+let svg3 = d3.select('#vis1')
 .append('svg')
 .attr('preserveAspectRatio', 'xMidYMid meet') 
 .attr('width', '50%') 
@@ -27,7 +27,7 @@ d3.csv("data/DataSet2.csv").then( function(data) {
   var x = d3.scaleLinear()
   .domain([0, 100])
   .range([ 0, width ]);
-  svg1.append("g")
+  svg3.append("g")
   .attr("transform", `translate(0, ${height})`)
   .call(d3.axisBottom(x));
 
@@ -35,11 +35,11 @@ d3.csv("data/DataSet2.csv").then( function(data) {
   var y = d3.scaleLinear()
   .domain([0, 100])
   .range([ height, 0]);
-  svg1.append("g")
+  svg3.append("g")
   .call(d3.axisLeft(y));
 
   // Add dots
-  svg1.append('g')
+  svg3.append('g')
   .selectAll("dot")
   .data(data)
   .join("circle")
