@@ -99,36 +99,6 @@ d3.csv("data/Boston Food Review - Sheet1.csv").then(function (data) {
   // create colors and give a color to each subgroup
   var color = d3.scaleOrdinal().domain(subgroups).range(["#e41a1c", "#377eb8"]);
 
-  // add tooltip functionality
-  const tooltip = d3
-    .select("#d3-container")
-    .append("div")
-    .style("opacity", 0)
-    .attr("class", "tooltip")
-    .style("background-color", "white")
-    .style("border", "solid")
-    .style("border-width", "1px")
-    .style("border-radius", "5px")
-    .style("padding", "10px");
-
-  // Three functions that change the tooltip when user hover / move / leave a cell
-  const mouseover = function (event, d) {
-    const subgroupName = d.X;
-    const subgroupValue = d.Y;
-    tooltip
-      .html("subgroup: " + subgroupName + "<br>" + "Value: " + subgroupValue)
-      .style("opacity", 1);
-  };
-  const mousemove = function (event, d) {
-    tooltip
-      .style("transform", "translateY(-55%)")
-      .style("left", event.x / 2 + "px")
-      .style("top", event.y / 2 - 30 + "px");
-  };
-  const mouseleave = function (event, d) {
-    tooltip.style("opacity", 0);
-  };
-
   // show the bars
   svg2
     .append("g")
@@ -149,7 +119,8 @@ d3.csv("data/Boston Food Review - Sheet1.csv").then(function (data) {
     .attr("width", xSubgroup.bandwidth())
     .attr("height", (d) => height - y(d.value))
     .attr("fill", (d) => color(d.key))
-    .on("mouseover", mouseover)
-    .on("mousemove", mousemove)
-    .on("mouseleave", mouseleave);
+    .append("title")
+    .text(function (d) {
+      return "" + d.key + ": " + d.value; //details on demand mouseover displays the data values
+    });
 });
